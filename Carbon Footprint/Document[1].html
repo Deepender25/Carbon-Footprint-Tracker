@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0px;
+            padding: 0px;
+            background: url(images/IMG-20241016-WA0000_1729025360926.jpg);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover, contain;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .content {
+            text-align: center;
+            color: #4CAF50;
+
+
+        }
+
+        .login-btn {
+            background-color: #008080;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.5s ease;
+            position: absolute;
+            right: 50px;
+            top: 0px;
+            z-index: 2;
+        }
+
+        .login-btn:hover {
+            background: #001f3f;
+            box-shadow: 0 0 100px #ffffff;
+            transform: scale(1.1);
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .close-btn {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .close-btn:hover {
+            background-color: darkred;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 70%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .submit-btn {
+            background-color: #008080;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .submit-btn:hover {
+            background-color: #001f3f;
+        }
+
+
+        header {
+            background: #65dabd49;
+            color: white;
+            padding: 50px 0;
+            text-align: left;
+            border-radius: 10px;
+            backdrop-filter: blur(3px);
+
+
+        }
+
+        .container {
+            flex: 1;
+            min-width: 1500px;
+            max-width: 1500px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.075);
+            backdrop-filter: blur(4px);
+            padding: 25px;
+            border-radius: 50px;
+            border: 1px solid #81e0e0;
+            margin-top: 20px;
+            overflow: auto;
+            height: auto;
+            align-items: center;
+            z-index: 0;
+
+        }
+
+        h1 {
+            position: absolute;
+            left: 100px;
+            top: 0px;
+            color: #000000;
+            font-size: 40px;
+        }
+
+        h2 {
+            margin-top: auto;
+            color: #000000;
+            font-size: 30px;
+
+
+
+        }
+
+        button {
+            background-color: #008080;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin: 20px auto;
+            display: block;
+        }
+
+        button:hover {
+            background-color: #001f3f;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+            font-size: 0.9em;
+            color: #ffffff;
+            background: rgb(0, 0, 0);
+            position: relative;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .bottom-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .bottom-buttons button {
+            margin: 0 0px;
+            padding: 15px 30px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+
+
+        .bottom-buttons button:not(:last-child) {
+            margin-right: 10px;
+        }
+
+        .bottom-buttons button:hover {
+            background-color: #001f3f;
+            transform: scale(1.1);
+        }
+
+        .welcome-message {
+            font-size: 1.3em;
+            color: #000000;
+            margin-top: auto;
+            margin-bottom: auto;
+
+        }
+
+        .calculator-description {
+            margin-top: 20px;
+            font-size: 1.3em;
+            color: #000000;
+            line-height: 1.6;
+        }
+
+        .formulas {
+            margin-top: 20px;
+            font-size: 1em;
+            color: #000000;
+            line-height: 1.6;
+            background: rgba(76, 175, 80, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background-color: transparent;
+
+        }
+
+        .container::-webkit-scrollbar-thumb:hover {
+            background-color: transparent;
+        }
+
+        .social-media {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+
+        }
+
+        .social-icon {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s;
+        }
+
+
+        .social-icon:hover {
+            transform: scale(1.5);
+        }
+
+        .contact1 {
+            color: #000000;
+            font-size: 1.4em;
+        }
+
+        .aboutus {
+            color: #000000;
+            font-size: 1.4em;
+        }
+
+        .contactlast {
+            color: #000000;
+            font-size: 1.4em;
+        }
+
+        .solutions1 {
+            color: #000000;
+            font-size: 1.4em;
+        }
+
+        .translater {
+            position: absolute;
+            right: 250px;
+            top: 30px;
+            z-index: 2;
+        }
+        .hoo1{
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            align-items: center;
+            gap: 1rem;
+            flex-direction: column;
+        }
+        .hoo{
+            font-size: 1.2em;
+        }
+        .result{
+            font-size: 1.5em;
+        }
+        
+
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <button id="loginBtn" class="login-btn" onclick="openPopup()">Login</button>
+    </div>
+
+    <div id="loginPopup" class="popup">
+        <div class="popup-content">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button class="submit-btn" onclick="submitLogin()">Login</button>
+            <br><br>
+            <button class="close-btn" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+    
+
+    <header>
+        <a href="Document[1].html">
+            <img src="images/logo001.png" alt="Carbon Footprint" width="100" height="100"
+                style="position: absolute; left: 0px; top: 0px;">
+        </a>
+        <h1>Carbon Footprint Tracker</h1>
+        <div id="google_translate_element" class="translater"></div>
+    </header>
+    
+
+    <!-- Home Page Section -->
+    <div id="home" class="container">
+        <h2>Welcome to the Carbon Footprint Tracker!</h2>
+        <p class="welcome-message">This application helps you monitor and reduce your carbon emissions through daily
+            activity tracking.</p>
+        <!--<p class="note-message">-Our planet's health is more important than ever, and understanding your carbon footprint is a crucial step in reducing your impact on the environment.
+         The Carbon Footprint Tracker is here to help you easily measure and monitor the emissions you create through daily activities like transportation, energy use, and consumption habits. 
+        Together, we can work toward a more sustainable future. Start tracking today and take the first step toward a greener lifestyle!</p>-->
+        <p class="calculator-description">Our calculator provides a simple way to estimate your daily carbon footprint
+            based on your transportation, electricity use, and food consumption.<br> By inputting your daily activities,
+            you can understand your impact on the environment and receive personalized suggestions for reduction.</p>
+        <button onclick="showSection('calculator')" class="calculatorbutton">Go to Carbon Footprint Calculator</button>
+        <h2>Formula for calculation:</h2>
+        <p>1.Diesel: 
+            2.68
+             kg CO2/liter</p>
+           <P>2.Petrol: 
+            2.31
+             kg CO2/liter</P>
+            <P>3.CNG: 
+            2.83
+             kg CO2/kg</P>
+            <p>4.Electricity: 
+            0.82
+             kg CO2/kWh</p>
+            <p>5.Veg Meal: 
+            2.5
+             kg CO2/meal</p>
+            <p>6.Non-Veg Meal: 
+            3.8
+             kg CO2/meal</p>
+            Total: Diesel Footprint + Petrol Footprint + CNG Footprint + Electricity Footprint + Vegfood Footprint + Nonvegfood Footprint.</p>
+        <h3>Note: Item Footprint = amount of CO2 used * amount of item used</h3>
+        </div>
+
+    <!-- Solutions Section -->
+    <div id="solutions" class="container hidden" class="solutions1">
+
+        <h2>Solutions and Impact on Daily Life</h2>
+        <p class="solutions1">The Carbon Footprint Tracker offers several solutions that can positively impact our daily
+            lives:</p>
+
+        <h2>2. Adopt a Plant-Based Diet</h2>
+        <p class="solutions1">Reducing meat and dairy consumption can significantly lower your carbon footprint.
+            Livestock farming generates large amounts of methane, a potent greenhouse gas, and requires extensive land
+            and water resources. By shifting towards a plant-based diet, or even incorporating more plant-based meals
+            into your week, you can decrease the environmental impact of your food choices. Plant-based diets typically
+            have a lower carbon footprint due to the reduced need for animal agriculture. Even small changes, like
+            opting for plant-based meals one or two days a week, can have a significant positive impact over time.</p>
+
+        <h2>3. Optimize Your Transportation Habits</h2>
+        <p class="solutions1">Transportation is one of the largest contributors to greenhouse gas emissions. To reduce
+            your impact, consider carpooling, biking, walking, or using public transportation whenever possible. If you
+            drive, make sure your vehicle is well-maintained for optimal fuel efficiency. Switching to an electric or
+            hybrid vehicle is another impactful way to cut down on emissions. Planning routes to reduce unnecessary
+            driving and opting for fuel-efficient cars can significantly reduce the carbon emissions associated with
+            your daily commute.</p>
+
+        <h2>4. Reduce, Reuse, and Recycle</h2>
+        <p class="solutions1">The three R's—reduce, reuse, and recycle—are essential for minimizing waste and lowering
+            your carbon footprint. Reducing waste helps conserve resources and energy used in production processes.
+            Reusing items extends their life and reduces the need for new products, while recycling allows materials to
+            be repurposed instead of ending up in landfills. Implementing these practices at home can significantly
+            lower the carbon footprint associated with household waste. Focus on buying products with minimal packaging,
+            choosing reusable items, and recycling materials properly.</p>
+
+        <h2>5. Improve Home Energy Efficiency</h2>
+        <p class="solutions1">Improving your home's energy efficiency can reduce both your carbon footprint and your
+            energy bills. Start by insulating your home to prevent heat loss in winter and keep it cool in summer.
+            Installing energy-efficient windows and using weather stripping can further reduce energy consumption.
+            Consider upgrading to energy-efficient appliances and LED lighting, which consume less power. Using a
+            programmable thermostat to optimize heating and cooling can also make a significant difference in energy
+            use.</p>
+
+        <h2>6. Support Carbon Offsetting Projects</h2>
+        <p class="solutions1">Carbon offsetting involves investing in projects that reduce greenhouse gas emissions,
+            such as reforestation, renewable energy projects, or methane capture. Supporting these initiatives can
+            compensate for unavoidable emissions in your daily life, effectively "offsetting" your carbon footprint.
+            Many organizations offer carbon offset programs that allow you to calculate your emissions and contribute to
+            projects that aim to balance them out. While this is not a substitute for reducing your carbon footprint, it
+            is a valuable complementary strategy.</p>
+        <h2>7. Purchase Locally Sourced Products</h2>
+        <p class="solutions1">Buying locally produced goods can reduce the carbon footprint associated with
+            transportation. Imported products often travel thousands of miles to reach consumers, leading to significant
+            emissions from shipping. By choosing locally grown food and products, you support local businesses while
+            reducing the environmental impact of long-distance transportation. This approach also helps reduce the need
+            for packaging, further lowering your carbon footprint.</p>
+
+        <h2>8. Conserve Water</h2>
+        <p class="solutions1">Water treatment and distribution consume energy, which contributes to greenhouse gas
+            emissions. Simple actions such as taking shorter showers, fixing leaky faucets, and using water-efficient
+            appliances can reduce your water consumption. Installing low-flow showerheads and dual-flush toilets can
+            also make a big difference. Reducing water waste helps conserve energy and resources, leading to a smaller
+            carbon footprint.</p>
+
+        <h2>9. Practice Sustainable Fashion</h2>
+        <p class="solutions1">The fashion industry is a significant contributor to global carbon emissions. Fast
+            fashion, in particular, results in high levels of waste and environmental degradation. To reduce your
+            footprint, consider buying fewer clothes, choosing high-quality items that last longer, and supporting
+            brands that prioritize sustainable practices. Thrift shopping and repurposing clothing can also help reduce
+            the demand for new production and decrease textile waste in landfills.</p>
+
+        <h2>10. Embrace a Minimalist Lifestyle</h2>
+        <p class="solutions1">A minimalist lifestyle focuses on owning fewer, but more meaningful, possessions. By
+            consuming less, you can reduce the demand for new products, which in turn lowers the emissions from
+            manufacturing and transportation. Minimalism encourages thoughtful consumption and promotes the reuse of
+            items instead of frequent replacement. It also helps decrease waste generation and conserves resources,
+            contributing to a smaller overall carbon footprint.</p>
+
+        <h2>11. Adopt Smart Technology for Energy Savings</h2>
+        <p class="solutions1">Smart technology, such as programmable thermostats, energy-efficient lighting, and smart
+            plugs, can optimize energy use in your home. These devices allow you to monitor and control energy
+            consumption, making it easier to reduce waste. Smart thermostats, for example, can adjust heating and
+            cooling based on your schedule, ensuring that energy is not wasted when you're not home. Energy-efficient
+            smart devices contribute to a more sustainable lifestyle and can lead to significant reductions in household
+            energy use.</p>
+
+        <h2>12. Support Sustainable Businesses</h2>
+        <p class="solutions1">Choose to support companies that prioritize sustainability in their business practices.
+            Many businesses are now focusing on reducing their carbon footprint by using renewable energy, sustainable
+            materials, and eco-friendly packaging. By purchasing products from these companies, you help drive demand
+            for sustainable business practices. Look for certifications such as B Corp, Fair Trade, or organic labels,
+            which indicate commitment to social and environmental responsibility.</p>
+
+        <h2>13. Engage in Community-Based Environmental Initiatives</h2>
+        <p class="solutions1">Joining or supporting local environmental initiatives can amplify your individual efforts
+            to reduce carbon emissions. Community gardens, tree planting projects, or local recycling drives are
+            examples of activities that promote sustainability. Participating in these projects not only helps the
+            environment but also raises awareness and inspires others to take action. The collective impact of a
+            community working together towards sustainability can be substantial.</p>
+
+        <h2>14. Optimize Your Digital Carbon Footprint</h2>
+        <p class="solutions1">Digital activities, including streaming and cloud storage, have a carbon footprint due to
+            the energy used by data centers. To minimize your digital impact, consider reducing the quality of video
+            streams when HD isn't necessary, limiting the number of emails sent, and cleaning up unused files in cloud
+            storage. Small changes, such as opting for local storage over cloud storage for non-essential files, can
+            also help lower the energy consumption associated with digital services.</p>
+
+        <h2>15. Plant Trees and Support Reforestation Efforts</h2>
+        <p class="solutions1">Trees absorb carbon dioxide from the atmosphere, making reforestation a vital strategy for
+            combating climate change. You can contribute by planting trees in your community, supporting reforestation
+            projects, or even adopting a tree-planting habit for each major life event. Reforestation not only helps
+            sequester carbon but also restores natural habitats, supports biodiversity, and prevents soil erosion. Even
+            small-scale efforts can contribute significantly to reducing global carbon levels.</p>
+
+        <h2>16. Use Energy-Efficient Cooking Methods</h2>
+        <p class="solutions1">Energy consumption during cooking can be optimized by using energy-efficient appliances
+            like pressure cookers, induction stoves, and slow cookers. These methods reduce cooking time and consume
+            less energy compared to traditional gas or electric stoves. Additionally, using lids on pots and pans to
+            retain heat and opting for batch cooking can further minimize the energy required for meal preparation.</p>
+
+        <h2>17. Educate Yourself and Advocate for Climate Action</h2>
+        <p class="solutions1">Learning about the causes and impacts of climate change empowers you to make informed
+            decisions and advocate for policies that promote sustainability. Engaging in climate activism or supporting
+            organizations that push for environmental legislation can amplify the impact of individual actions. By
+            educating yourself and others, you can help build momentum for the systemic changes needed to address the
+            climate crisis.</p>
+
+        <h2>18. Limit Air Travel and Offset Emissions</h2>
+        <p class="solutions1">Air travel is a significant source of carbon emissions. Whenever possible, opt for
+            alternative forms of transportation, such as trains or buses, which have a lower environmental impact. If
+            flying is necessary, choose direct flights and support carbon offset programs to mitigate the emissions from
+            your journey. Reducing the frequency of air travel and considering virtual meetings instead of in-person
+            meetings can also help lower your travel-related carbon footprint.</p>
+
+        <h2>19. Choose Energy-Efficient Electronics</h2>
+        <p class="solutions1">When purchasing new electronics, look for energy-efficient models that carry
+            certifications like ENERGY STAR. These products consume less power than standard models, leading to reduced
+            energy use and a smaller carbon footprint over time. Additionally, consider turning off devices when they
+            are not in use, enabling power-saving modes, and unplugging chargers to prevent "vampire" energy
+            consumption.</p>
+
+        <h2>20. Support Government and Corporate Climate Initiatives</h2>
+        <p class="solutions1">Push for stronger climate policies by supporting political leaders who prioritize
+            environmental issues and advocate for corporate accountability in reducing emissions. Encouraging businesses
+            to adopt sustainable practices, such as renewable energy usage and transparent supply chains, can lead to
+            broader systemic changes. As consumers and voters, individuals have the power to influence corporate and
+            government behavior, creating an environment where sustainability becomes the standard practice.</p>
+        <button onclick="showSection('home')">Back to Home</button>
+    </div>
+
+    <div id="calculator" class="container hidden">
+        <h2>Track Your Carbon Footprint</h2>
+        <h3>Log your daily activities to calculate your carbon footprint.</h3>
+    
+        <div class="hoo1">
+            <div class="hoo"><label for="diesel">Diesel Consumption (l):</label>
+            <input type="number" id="diesel" placeholder="Enter litre used" min="0" required></div>
+            
+            <div class="hoo"><label for="petrol">Petrol Consumption (l):</label>
+            <input type="number" id="petrol" placeholder="Enter litre used" min="0" required></div>
+
+            <div class="hoo"><label for="cng">CNG Consumption (kg):</label>
+            <input type="number" id="cng" placeholder="Enter kg used" min="0" required></div>
+
+            <div class="hoo"><label for="electricity">Electricity Consumption (kWh):</label>
+            <input type="number" id="electricity" placeholder="Enter kWh used" min="0" required></div>
+            
+            <div class="hoo"><label for="vegmeal">veg Food Consumption:</label>
+            <input type="number" id="vegmeal" placeholder="Enter meals eaten per day" min="0" required></div>
+
+            <div class="hoo"><label for="nonvegmeal">non-veg Food Consumption:</label>
+            <input type="number" id="nonvegmeal" placeholder="Enter meals eaten per day" min="0" required></div>
+            
+            <button onclick="calculateFootprint()">Calculate Carbon Footprint</button>
+            
+            <div id="result"></div>
+        </div>
+        
+
+
+        <p class="calculator-description">Use the calculator to see how your daily habits contribute to your carbon
+            emissions. You'll receive insights into how small changes can make a big difference in reducing your
+            environmental impact.</p>
+    </div>
+    <div id="contactus" class="container hidden">
+        <div class="contact1">
+            <h3>Get in Touch with Us!</h3>
+            <p>We value your feedback and inquiries! At Carbon Footprint Tracker, we're dedicated to helping you monitor
+                and reduce your carbon emissions, and your input is essential to our mission. Whether you have questions
+                about our services, need assistance with our app, or want to share your sustainability journey, we’d
+                love to hear from you.</p>
+            <p>You can reach us by filling out the contact form below, and our support team will respond as soon as
+                possible. Alternatively, you can also connect with us via email at support@carbonfootprinttracker.com or
+                follow us on our social media channels for updates, tips, and community events.</p>
+            <p>Stay connected and join our growing community of eco-conscious individuals! Together, we can make a
+                significant impact on our planet’s health. Thank you for choosing Carbon Footprint Tracker as your
+                partner in sustainability.</p>
+            <h4>Contact Information:</h4>
+            <ul>
+                <li>Email: support@carbonfootprinttracker.com</li>
+                <li>Phone: +91 70158xxxxx</li>
+                <li>Social Media: Follow us on Instagram, Facebook, Twitter, YouTube, and GitHub!</li>
+            </ul>
+            <div class="social-media"><a href="#" class="social-icon" aria-label="Twitter"><svg role="img"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <title>X</title>
+                        <path
+                            d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+                    </svg></a>
+                <a href="#" class="social-icon" aria-label="Instagram"><svg role="img" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <title>Instagram</title>
+                        <path
+                            d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077" />
+                    </svg></a>
+                <a href="#" class="social-icon" aria-label="YouTube"><svg role="img" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <title>YouTube</title>
+                        <path
+                            d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg></a>
+                <a href="#" class="social-icon" aria-label="Facebook"><svg role="img" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <title>Facebook</title>
+                        <path
+                            d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" />
+                    </svg></a>
+                <a href="#" class="social-icon" aria-label="GitHub"><svg role="img" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <title>GitHub</title>
+                        <path
+                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                    </svg></a>
+
+            </div>
+        </div>
+        <p class="contactlast">We look forward to hearing from you!</p>
+        <button onclick="showSection('home')">Back to Home</button>
+    </div>
+    <div id="aboutus" class="container hidden">
+        <div class="aboutus">
+            <h3>About Us</h3>
+            <p>Welcome to our Carbon Footprint Tracker! We are a passionate team committed to raising awareness about
+                environmental sustainability and empowering individuals to make a positive impact on our planet. Our
+                mission is to help people understand the impact of their daily activities on the environment and provide
+                simple tools to track and reduce their carbon footprint</p>
+            <p>Our tracker makes it easy for you to calculate your carbon emissions from common activities such as
+                transportation, electricity consumption, and food choices. By logging these daily habits, you can see
+                how small changes can add up to significant environmental benefits over time. We believe that informed,
+                empowered individuals are key to driving change towards a more sustainable future.</p>
+            <p>We are dedicated to providing accurate and accessible information on carbon emissions, helping you make
+                data-driven decisions for a healthier planet. Our goal is not only to raise awareness but also to
+                inspire actionable steps that can lead to meaningful reductions in your carbon footprint.</p>
+            <p>Thank you for joining us in our journey toward sustainability. Together, we can make a big difference,
+                one small step at a time.</p>
+            
+        </div>
+    </div>
+    <!-- Bottom Buttons -->
+    <div class="bottom-buttons">
+        <button onclick="showSection('solutions')">Solutions</button>
+        <button onclick="showSection('contactus')">Contact Us</button>
+        <button onclick="showSection('aboutus')">About Us</button>
+    </div>
+
+
+    <footer>
+        <p>� 2024 Carbon Footprint Tracker. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.container');
+            sections.forEach(section =>{
+                if (section.id === sectionId) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        }
+
+        function calculateFootprint() {
+    const diesel = parseFloat(document.getElementById('diesel').value) || 0;
+    const petrol = parseFloat(document.getElementById('petrol').value) || 0;
+    const cng = parseFloat(document.getElementById('cng').value) || 0;
+    const electricity = parseFloat(document.getElementById('electricity').value) || 0;
+    const vegmeals = parseFloat(document.getElementById('vegmeal').value) || 0;
+    const nonvegmeals = parseFloat(document.getElementById('nonvegmeal').value) || 0;
+
+    const dieselFootprint = diesel * 2.68;
+    const petrolFootprint = petrol * 2.31;
+    const cngFootprint = cng * 2.83;
+    const electricityFootprint = electricity * 0.82; // kg CO2 per kWh
+    const vegfoodFootprint = vegmeals * 2.5;
+    const nonvegfoodFootprint = nonvegmeals * 3.8; // kg CO2 per meal
+
+    const totalFootprint = dieselFootprint + petrolFootprint + cngFootprint + electricityFootprint + vegfoodFootprint + nonvegfoodFootprint;
+
+
+    document.getElementById('result').innerText = `Your estimated daily carbon footprint is: ${totalFootprint.toFixed(2)} kg CO2`;
+    }
+        function openPopup() {
+            document.getElementById('loginPopup').style.display = 'flex';
+        }
+        function closePopup() {
+            document.getElementById('loginPopup').style.display = 'none';
+        }
+        function submitLogin() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            if (username && password) {
+                var loginBtn = document.getElementById('loginBtn');
+                loginBtn.innerText = 'Logged in as ' + username;
+                loginBtn.disabled = true;
+                alert('Login successful! Welcome, ' + username + '!');
+                closePopup();
+            } else {
+                alert('Please fill in both fields.');
+            }
+        }
+        
+
+
+    </script>
+    <script src="script.js"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                { pageLanguage: 'en' },
+                'google_translate_element'
+            );
+        } 
+    </script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+
+</html>

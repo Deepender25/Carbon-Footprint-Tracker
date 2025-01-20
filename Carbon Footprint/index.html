@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Calculator</title>
+    <style>
+        /* Basic CSS for styling the web application */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .transport-inputs {
+            display: none;
+        }
+
+        .input-group {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Carbon Footprint Calculator</h1>
+        <input type="number" id="electricity" placeholder="Electricity (kWh/month)" />
+        <input type="number" id="carMiles" placeholder="Car Miles Driven per Month" />
+        <input type="number" id="flights" placeholder="Flight Hours per Year" />
+
+        <h2>Transport</h2>
+        <select id="transportType" multiple onchange="showTransportInputs()">
+            <option value="petrol">Petrol</option>
+            <option value="diesel">Diesel</option>
+            <option value="cng">CNG</option>
+        </select>
+
+        <div id="transportInputs">
+            <div class="transport-inputs" id="petrolInputs">
+                <div class="input-group">
+                    <input type="number" id="petrolAmount" placeholder="Amount of Petrol (liters)" />
+                </div>
+            </div>
+            <div class="transport-inputs" id="dieselInputs">
+                <div class="input-group">
+                    <input type="number" id="dieselAmount" placeholder="Amount of Diesel (liters)" />
+                </div>
+            </div>
+            <div class="transport-inputs" id="cngInputs">
+                <div class="input-group">
+                    <input type="number" id="cngAmount" placeholder="Amount of CNG (kg)" />
+                </div>
+                <div class="input-group">
+                    <input type="number" id="cngPetrolAmount" placeholder="Amount of Petrol (liters)" />
+                </div>
+            </div>
+        </div>
+
+        <button onclick="calculateFootprint()">Calculate</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        // JavaScript to handle dynamic input display for transport types
+        function showTransportInputs() {
+            const transportType = Array.from(document.getElementById('transportType').selectedOptions).map(option => option.value);
+
+            document.querySelectorAll('.transport-inputs').forEach(inputGroup => {
+                inputGroup.style.display = 'none';
+            });
+
+            if (transportType.includes('petrol')) {
+                document.getElementById('petrolInputs').style.display = 'block';
+            }
+            if (transportType.includes('diesel')) {
+                document.getElementById('dieselInputs').style.display = 'block';
+            }
+            if (transportType.includes('cng')) {
+                document.getElementById('cngInputs').style.display = 'block';
+            }
+        }
+
+        // JavaScript for calculating the carbon footprint
+        function calculateFootprint() {
+            // Get input values
+            const electricity = parseFloat(document.getElementById('electricity').value) || 0;
+            const carMiles = parseFloat(document.getElementById('carMiles').value) || 0;
+            const flights = parseFloat(document.getElementById('flights').value) || 0;
+
+            const petrolAmount = parseFloat(document.getElementById('petrolAmount').value) || 0;
+            const dieselAmount = parseFloat(document.getElementById('dieselAmount').value) || 0;
+            const cngAmount = parseFloat(document.getElementById('cngAmount').value) || 0;
+            const cngPetrolAmount = parseFloat(document.getElementById('cngPetrolAmount').value) || 0;
+
+            // Constants for carbon footprint calculation
+            const electricityFactor = 0.92; // kg CO2 per kWh
+            const carFactor = 0.404; // kg CO2 per mile
+            const flightFactor = 90; // kg CO2 per flight hour
+            const petrolFactor = 2.31; // kg CO2 per liter of petrol
+            const dieselFactor = 2.68; // kg CO2 per liter of diesel
+            const cngFactor = 2.75; // kg CO2 per kg of CNG
+
+            // Calculate the total carbon footprint
+            const electricityFootprint = electricity * electricityFactor * 12; // yearly
+            const carFootprint = carMiles * carFactor * 12; // yearly
+            const flightFootprint = flights * flightFactor;
+            const petrolFootprint = petrolAmount * petrolFactor;
+            const dieselFootprint = dieselAmount * dieselFactor;
+            const cngFootprint = cngAmount * cngFactor + cngPetrolAmount * petrolFactor;
+
+            const totalFootprint = electricityFootprint + carFootprint + flightFootprint + petrolFootprint + dieselFootprint + cngFootprint;
+
+            // Display the result
+            document.getElementById('result').innerHTML = 
+                `Your estimated yearly carbon footprint is <strong>${totalFootprint.toFixed(2)}</strong> kg CO2`;
+        }
+    </script>
+</body>
+</html>

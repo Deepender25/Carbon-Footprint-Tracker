@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Slider</title>
+    <style>
+        /* Basic styling for the page */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        /* Slider container */
+        .slider-container {
+            overflow: hidden;
+            width: 80%;
+            max-width: 900px;
+        }
+
+        /* Card wrapper to align cards horizontally */
+        .card-wrapper {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        /* Individual card styling */
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            margin: 0 10px;
+            flex-shrink: 0;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Card content */
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 1.2em;
+        }
+
+        .card p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Navigation buttons */
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .prev {
+            left: 5%;
+        }
+
+        .next {
+            right: 5%;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <div class="card-wrapper">
+            <div class="card">
+                <h3>Card 1</h3>
+                <p>Content for card 1 goes here.</p>
+            </div>
+            <div class="card">
+                <h3>Card 2</h3>
+                <p>Content for card 2 goes here.</p>
+            </div>
+            <div class="card">
+                <h3>Card 3</h3>
+                <p>Content for card 3 goes here.</p>
+            </div>
+            <div class="card">
+                <h3>Card 4</h3>
+                <p>Content for card 4 goes here.</p>
+            </div>
+            <div class="card">
+                <h3>Card 5</h3>
+                <p>Content for card 5 goes here.</p>
+            </div>
+        </div>
+        <!-- Navigation buttons -->
+        <button class="slider-button prev" onclick="slide(-1)">&#10094;</button>
+        <button class="slider-button next" onclick="slide(1)">&#10095;</button>
+    </div>
+
+    <script>
+        const cardWrapper = document.querySelector('.card-wrapper');
+        let currentIndex = 0;
+
+        function slide(direction) {
+            const cardWidth = document.querySelector('.card').offsetWidth;
+            const gap = 20; // Margin between cards
+            currentIndex += direction;
+            const totalCards = document.querySelectorAll('.card').length;
+
+            // Check boundaries
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            } else if (currentIndex > totalCards - 1) {
+                currentIndex = totalCards - 1;
+            }
+
+            cardWrapper.style.transform = `translateX(-${(cardWidth + gap) * currentIndex}px)`;
+        }
+    </script>
+</body>
+</html>
+
