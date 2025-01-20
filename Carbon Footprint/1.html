@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background:url(images/bg4.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover,contain;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .login-btn {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            position: absolute; right: 50px; top: 0px;
+
+        }
+        .login-btn:hover {
+            background: #62bd67;
+            box-shadow: 0 0 100px #ffffff;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .close-btn {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .close-btn:hover {
+            background-color: darkred;
+        }
+        input[type="text"], input[type="password"] {
+            width: 70%;
+            padding-bottom: 0px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+
+        header {
+            background: rgba(76, 175, 80, 0.8);
+            color: white;
+            padding: 50px 0;
+            text-align: left;
+        }
+        .container {
+            flex: 1;
+            max-width: 1500px;
+            margin: auto;
+            backdrop-filter: blur(3px);
+            background: rgba(149, 170, 150, 0.671);           
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+            overflow: auto;
+            height: auto;
+            align-items: center;
+            
+        }        
+        h1 {    
+            position: absolute; left: 100px; top: 0px;    
+            color: #000000;
+            font-size: 40px;
+        }
+        h2 {
+            margin-top: auto;
+            color: #000000;
+            font-size: 30px;
+
+
+            
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin: 20px auto;
+            display: block;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+            color: #777;
+            background: rgba(76, 175, 80, 0.8);
+            position: relative;
+            margin: 0px;
+        }
+        .hidden {
+            display: none;
+        }
+        .bottom-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .bottom-buttons button {
+            margin: 0 10px;
+        }
+        .welcome-message {
+            font-size: 20px;
+            color: #161515;
+            margin-top: auto;
+            margin-bottom:auto;
+    
+        }
+        .note-message {
+            font-size: 1.2em;
+            color: #161515;
+            margin-bottom: auto;
+        }
+        .calculator-description {
+            margin-top: 20px;
+            font-size: 1.0em;
+            color: #0000;
+            line-height: 1.6;
+        }
+        .formulas {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #555;
+            line-height: 1.6;
+            background: rgba(76, 175, 80, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <button id="loginBtn" class="login-btn" onclick="openPopup()">Login</button>
+    </div>
+
+    <div id="loginPopup" class="popup">
+        <div class="popup-content">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button class="submit-btn" onclick="submitLogin()">Login</button>
+            <br><br>
+            <button class="close-btn" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+    
+
+<header>
+    <a href="Document[1].html">
+    <img src="images/logo001.png" alt="Carbon Footprint" width="100" height="100" style="position: absolute; left: 0px; top: 0px;">
+</a>
+    <h1>Carbon Footprint Tracker</h1>
+</header>
+
+<!-- Home Page Section -->
+<section id="home">
+    <div id="home" class="container">
+    <h2>Welcome to the Carbon Footprint Tracker!</h2>
+    <p class="welcome-message">-This application helps you monitor and reduce your carbon emissions through daily activity tracking.</p>
+    <p class="note-message">-Our planet's health is more important than ever, and understanding your carbon footprint is a crucial step in reducing your impact on the environment.
+        The Carbon Footprint Tracker is here to help you easily measure and monitor the emissions you create through daily activities like transportation, energy use, and consumption habits. 
+        Together, we can work toward a more sustainable future. Start tracking today and take the first step toward a greener lifestyle!</p>
+    <p class="calculator-description">-Our calculator provides a simple way to estimate your daily carbon footprint based on your transportation, electricity use, and food consumption. By inputting your daily activities, you can understand your impact on the environment and receive personalized suggestions for reduction.</p>
+    <button onclick="showSection('calculator')">Go to Carbon Footprint Calculator</button>
+    </div>
+</section>
+<!-- Solutions Section -->
+<section id="solutions">
+
+    <div id="solutions" class="container hidden">
+        <h2>Solutions and Impact on Daily Life</h2>
+        <p>The Carbon Footprint Tracker offers several solutions that can positively impact our daily lives:</p>
+
+        <h3>1. Enhanced Awareness</h3>
+        <p>By quantifying carbon emissions from everyday activities, users become more aware of their environmental impact, prompting more sustainable choices.</p>
+
+        <h3>2. Personalized Recommendations</h3>
+        <p>The app provides tailored suggestions to reduce carbon footprints, such as alternative transportation methods, energy-saving tips, and dietary changes.</p>
+
+        <h3>3. Community Engagement</h3>
+        <p>Users can participate in eco-friendly challenges, fostering a sense of community and shared responsibility for sustainability.</p>
+
+        <h3>4. Data-Driven Decisions</h3>
+        <p>With access to their own data, users can track progress over time and make informed decisions about their lifestyles, contributing to a lower overall carbon footprint.</p>
+
+        <h3>5. Supporting Global Goals</h3>
+        <p>This project aligns with global sustainability goals, encouraging individuals to contribute to larger efforts against climate change.</p>
+
+        <button onclick="showSection('home')">Back to Home</button>
+    </div>
+
+
+    <div id="calculator" class="container hidden">
+        <h2>Track Your Carbon Footprint</h2>
+        <p>Log your daily activities to calculate your carbon footprint.</p>
+
+        <div>
+            <label for="transportation">Daily Transportation (Km):</label>
+            <input type="number" id="transportation" placeholder="Enter kilometers driven" min="0" required>
+        
+            <label for="electricity">Electricity Consumption (kWh):</label>
+            <input type="number" id="electricity" placeholder="Enter kWh used" min="0" required>
+
+            <label for="electricity">Disel Consumption (L):</label>
+            <input type="number" id="electricity" placeholder="Enter L used" min="0" required>
+
+            <label for="electricity">Petrol Consumption (L):</label>
+            <input type="number" id="electricity" placeholder="Enter L used" min="0" required>
+
+            <label for="electricity">CNG Consumption (Kg):</label>
+            <input type="number" id="electricity" placeholder="Enter Kg used" min="0" required>
+        
+            <label for="food">Veg Food Consumption (number of meals per day):</label>
+            <input type="number" id="food" placeholder="Enter meals eaten per day" min="0" required>
+
+            <label for="food">Non-Veg Food Consumption (number of meals per day):</label>
+            <input type="number" id="food" placeholder="Enter meals eaten per day" min="0" required>
+        
+            <button onclick="calculateFootprint()">Calculate Carbon Footprint</button>
+        
+        <div id="result"></div>
+    </div>
+    
+    <p class="calculator-description">Use the calculator to see how your daily habits contribute to your carbon emissions. You'll receive insights into how small changes can make a big difference in reducing your environmental impact.</p>
+
+    <div class="formulas">
+        <h3>Formulas for Carbon Footprint Calculation</h3>
+        <p>To calculate your carbon footprint, we use the following formulas:</p>
+        <ul>
+            <li><strong>Transportation Footprint:</strong> <br> Carbon Emissions (kg CO2) = Kilometers Driven   0.125 kg CO2/Km</li>
+            <li><strong>Electricity Footprint:</strong> <br> Carbon Emissions (kg CO2) = kWh Used   0.82 kg CO2/kWh</li>
+            <li><strong>Disel Footprint:</strong> <br> Carbon Emissions (kg CO2) = kWh Used   0.82 kg CO2/kWh</li>
+            <li><strong>Petrol Footprint:</strong> <br> Carbon Emissions (kg CO2) = kWh Used   0.82 kg CO2/kWh</li>
+            <li><strong>CNG Footprint:</strong> <br> Carbon Emissions (kg CO2) = kWh Used   0.82 kg CO2/kWh</li>
+            <li><strong>Veg Food Footprint:</strong> <br> Carbon Emissions (kg CO2) = Meals Eaten   0.723 kg CO2/meal</li>
+            <li><strong>Non-Veg Food Footprint:</strong> <br> Carbon Emissions (kg CO2) = Meals Eaten   4.8 kg CO2/meal</li>
+        </ul>
+        <p><strong>Total Carbon Footprint:</strong> <br> Total Carbon Emissions (kg CO2) = Transportation Footprint + Electricity Footprint + Food Footprint</p>
+    </div>
+
+    <button onclick="showSection('home')">Back to Home</button>
+    </div>
+</section>
+<!-- Bottom Buttons -->
+<section id="Buttons">
+    <div class="bottom-buttons">
+        <button onclick="showSection('solutions')">Solutions</button>
+        <button onclick="alert('Contact us at support@example.com')">Contact Us</button>
+        <button onclick="alert('About Us: We aim to promote sustainability and awareness regarding carbon footprints.')">About Us</button>
+    </div>
+</section>
+<footer>
+    <p>  2024 Carbon Footprint Tracker. All rights reserved.</p>
+</footer>
+
+<script>
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.container');
+        sections.forEach(section => {
+            if (section.id === sectionId) {
+                section.classList.remove('hidden');
+            } else {
+                section.classList.add('hidden');
+            }
+        });
+    }
+
+    function calculateFootprint() {
+        const kilometers = parseFloat(document.getElementById('transportation').value) || 0;
+        const electricity = parseFloat(document.getElementById('electricity').value) || 0;
+        const disel = parseFloat(document.getElementById('disel').value) || 0;
+        const petrol = parseFloat(document.getElementById('petrol').value) || 0;
+        const cng = parseFloat(document.getElementById('cng').value) || 0;
+        const vegmeals = parseFloat(document.getElementById('vegfood').value) || 0;
+        const nonvegmeals = parseFloat(document.getElementById('nonvegfood').value) || 0;
+
+        const transportationFootprint = kilometers * 0.125;
+        const electricityFootprint = electricity * 0.82; // kg CO2 per kWh
+        const diselFootprint = electricity * 0.82; // kg CO2 per kWh
+        const petrolFootprint = electricity * 0.82; // kg CO2 per kWh
+        const cngFootprint = electricity * 0.82; // kg CO2 per kWh
+        const vegfoodFootprint = meals * 0.732; // kg CO2 per meal
+        const nonvegfoodFootprint = meals * 4.8; // kg CO2 per meal
+
+        const totalFootprint = transportationFootprint + electricityFootprint + diselFootprint + petrolFootprint + cngFootprint + vegfoodFootprint +nonvegfoodFootprint;
+
+        document.getElementById('result').innerText = `Your estimated daily carbon footprint is: ${totalFootprint.toFixed(2)} kg CO2`;
+    }
+    function openPopup() {
+        document.getElementById('loginPopup').style.display = 'flex';
+    }
+    function closePopup() {
+        document.getElementById('loginPopup').style.display = 'none';
+    }
+    function submitLogin() {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        if (username && password) {
+            var loginBtn = document.getElementById('loginBtn');
+            loginBtn.innerText = 'Logged in as ' + username;
+            loginBtn.disabled = true;
+            alert('Login successful! Welcome, ' + username + '!');
+            closePopup();
+        } else {
+            alert('Please fill in both fields.');
+        }
+    }
+
+</script>
+
+</body>
+</html>
